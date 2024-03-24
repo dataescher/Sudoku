@@ -138,6 +138,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>CsBuild.exe --wd "$(ProjectDir)Properties" --update "AssemblyInfo.cs"</PreBuildEvent>
+    <PreBuildEvent>DataescherBuildTools.exe --wd "$(ProjectDir)Properties" --vcs GIT --update "AssemblyInfo.cs"</PreBuildEvent>
   </PropertyGroup>
 </Project>
