@@ -7,7 +7,7 @@ namespace Sudoku.Engine.Solver {
 		public NakedSinglesSolver(Grid grid) : base(grid) { }
 		public override Int32 Solve(Boolean solveMultiple, LogItemGroup log, Boolean modifyGrid = true) {
 			// Check for cells which only have one possibility, and fill in the value
-			List<Tuple<Char, Cell>> candidatesFilled = new();
+			List<Tuple<Char, Cell>> candidatesFilled = [];
 			foreach (Cell cell in _grid.Cells) {
 				if (cell.Empty) {
 					if (cell.CandidateCount == 1) {

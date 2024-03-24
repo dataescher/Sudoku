@@ -14,22 +14,22 @@ namespace Sudoku.Engine.Solver {
 			// candiate from the same row or column for all the other boxes
 			Int32 tacticsFound = 0;
 			foreach (Box thisBox in _grid.Boxes) {
-				Dictionary<Char, List<Cell>> candidates = new();
+				Dictionary<Char, List<Cell>> candidates = [];
 				foreach (Cell thisCell in thisBox.Cells) {
 					foreach (Char thisCandidate in thisCell.Candidates) {
 						if (candidates.TryGetValue(thisCandidate, out List<Cell> thesePossibilities)) {
 							thesePossibilities.Add(thisCell);
 						} else {
-							candidates.Add(thisCandidate, new() { thisCell });
+							candidates.Add(thisCandidate, [thisCell]);
 						}
 					}
 				}
 				// Now, go through the characters and determine if any of them are all in the same row or column
 				foreach (KeyValuePair<Char, List<Cell>> candidate in candidates) {
 					// Loop through the possibilities and determine if the columns are all the same or the rows are all the same
-					List<Cell> evaluatedCells = new();
-					List<Column> seenCols = new();
-					List<Row> seenRows = new();
+					List<Cell> evaluatedCells = [];
+					List<Column> seenCols = [];
+					List<Row> seenRows = [];
 					// Multiple squares have this number as a candidate. Figure out if they're all either in the same row or column.
 					foreach (Cell thisCell in candidate.Value) {
 						evaluatedCells.Add(thisCell);
@@ -52,12 +52,12 @@ namespace Sudoku.Engine.Solver {
 									if (thisSelectCell.Candidates.Contains(candidate.Key)) {
 										if (thisBox != selectBox) {
 											if (eliminatedCandidateCells == null) {
-												eliminatedCandidateCells = new() { thisSelectCell };
+												eliminatedCandidateCells = [thisSelectCell];
 											} else {
 												eliminatedCandidateCells.Add(thisSelectCell);
 											}
 										} else if (pointingCandidateCells == null) {
-											pointingCandidateCells = new() { thisSelectCell };
+											pointingCandidateCells = [thisSelectCell];
 										} else {
 											pointingCandidateCells.Add(thisSelectCell);
 										}
@@ -67,9 +67,7 @@ namespace Sudoku.Engine.Solver {
 						}
 						if (eliminatedCandidateCells is not null) {
 							tacticsFound++;
-							if (log is not null) {
-								log.Items.Add(new PointingSubsetLog(_grid, thisBox, thisSeenCol, candidate.Key, evaluatedCells, eliminatedCandidateCells));
-							}
+							log?.Items.Add(new PointingSubsetLog(_grid, thisBox, thisSeenCol, candidate.Key, evaluatedCells, eliminatedCandidateCells));
 							if (modifyGrid) {
 								foreach (Cell thisCell in eliminatedCandidateCells) {
 									thisCell.RemoveCandidate(candidate.Key);
@@ -91,12 +89,12 @@ namespace Sudoku.Engine.Solver {
 								if (thisSelectCell.Candidates.Contains(candidate.Key)) {
 									if (thisBox != selectBox) {
 										if (eliminatedCandidateCells == null) {
-											eliminatedCandidateCells = new() { thisSelectCell };
+											eliminatedCandidateCells = [thisSelectCell];
 										} else {
 											eliminatedCandidateCells.Add(thisSelectCell);
 										}
 									} else if (pointingCandidateCells == null) {
-										pointingCandidateCells = new() { thisSelectCell };
+										pointingCandidateCells = [thisSelectCell];
 									} else {
 										pointingCandidateCells.Add(thisSelectCell);
 									}
@@ -105,9 +103,7 @@ namespace Sudoku.Engine.Solver {
 						}
 						if (eliminatedCandidateCells is not null) {
 							tacticsFound++;
-							if (log is not null) {
-								log.Items.Add(new PointingSubsetLog(_grid, thisBox, thisSeenRow, candidate.Key, pointingCandidateCells, eliminatedCandidateCells));
-							}
+							log?.Items.Add(new PointingSubsetLog(_grid, thisBox, thisSeenRow, candidate.Key, pointingCandidateCells, eliminatedCandidateCells));
 							if (modifyGrid) {
 								foreach (Cell thisCell in eliminatedCandidateCells) {
 									thisCell.RemoveCandidate(candidate.Key);

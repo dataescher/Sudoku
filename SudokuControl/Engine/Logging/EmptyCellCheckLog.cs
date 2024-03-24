@@ -10,7 +10,7 @@ namespace Sudoku.Engine.Logging {
 		public EmptyCellCheckLog(Grid grid, List<Cell> emptyCells) : base(grid) {
 			_emptyCells = null;
 			if (emptyCells is not null) {
-				_emptyCells = new();
+				_emptyCells = [];
 				foreach (Cell thisEmptyCell in emptyCells) {
 					_emptyCells.Add(_grid.Cells[thisEmptyCell.Index]);
 				}
@@ -19,7 +19,7 @@ namespace Sudoku.Engine.Logging {
 		public override LogDetail Details {
 			get {
 				LogDetail details = new(this);
-				Boolean completionCheckResult = (_emptyCells is null);
+				Boolean completionCheckResult = _emptyCells is null;
 				String status;
 				if (completionCheckResult) {
 					status = "PASSED";

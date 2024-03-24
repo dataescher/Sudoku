@@ -17,7 +17,7 @@ namespace Sudoku.Engine {
 					} else if (!candidatesEliminated.TryGetValue(unit, out Dictionary<Cell, List<Cell>> candidateEliminationMap)) {
 						candidatesEliminated.Add(unit, new Dictionary<Cell, List<Cell>>() { { filledCell, new List<Cell>() { emptyCell } } });
 					} else if (!candidateEliminationMap.TryGetValue(filledCell, out List<Cell> candidateEliminationList)) {
-						candidateEliminationMap.Add(filledCell, new List<Cell>() { emptyCell });
+						candidateEliminationMap.Add(filledCell, [emptyCell]);
 					} else {
 						candidateEliminationList.Add(emptyCell);
 					}
@@ -52,7 +52,7 @@ namespace Sudoku.Engine {
 						if (!cell.HasCandidate(thisValue)) {
 							candidateResetCnt++;
 							if (candidatesReset is null) {
-								candidatesReset = new List<Tuple<Cell, Char>>() { new Tuple<Cell, Char>(cell, thisValue) };
+								candidatesReset = [new Tuple<Cell, Char>(cell, thisValue)];
 							} else {
 								candidatesReset.Add(new Tuple<Cell, Char>(cell, thisValue));
 							}
@@ -88,9 +88,7 @@ namespace Sudoku.Engine {
 				}
 			}
 			if (candidatesEliminated is not null) {
-				if (log is not null) {
-					log.Items.Add(new UpdateCandidatesLog(_grid, candidatesEliminated));
-				}
+				log?.Items.Add(new UpdateCandidatesLog(_grid, candidatesEliminated));
 				if (modifyGrid) {
 					foreach (KeyValuePair<Unit, Dictionary<Cell, List<Cell>>> thisCandidateEliminated in candidatesEliminated) {
 						foreach (KeyValuePair<Cell, List<Cell>> thisElimination in thisCandidateEliminated.Value) {

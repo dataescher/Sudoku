@@ -10,18 +10,16 @@ namespace Sudoku.Engine {
 			while (n > 1) {
 				n--;
 				Int32 k = rnd.Next(n + 1);
-				Char value = list[k];
-				list[k] = list[n];
-				list[n] = value;
+				(list[n], list[k]) = (list[k], list[n]);
 			}
 		}
 		public static Grid GeneratePuzzle(Int32 boxWidth, Int32 boxHeight) {
 			Grid grid = new(boxWidth, boxHeight);
 			CandidateGenerator candidateGenerator = new(grid);
-			candidateGenerator.Solve(true, null, true);
-			GenerateRandomGrid(ref grid);
+			_ = candidateGenerator.Solve(true, null, true);
+			_ = GenerateRandomGrid(ref grid);
 			// Now, try to eliminate as many values as possible with the grid still having one unique solution
-			List<Cell> valueCells = new();
+			List<Cell> valueCells = [];
 			foreach (Cell thisCell in grid.Cells) {
 				if (!thisCell.Empty) {
 					valueCells.Add(thisCell);
@@ -33,11 +31,11 @@ namespace Sudoku.Engine {
 				Cell cellToEvaluate = valueCells[cellToEvaluateIdx];
 				Char backupValue = cellToEvaluate._value;
 				cellToEvaluate._value = Cell.EmptyChar;
-				List<String> solutions = new();
+				List<String> solutions = [];
 				Grid testGrid = grid.Clone() as Grid;
 				Int32 bruteForceMaxTries = -1;
 				BruteForceSolveEngine bruteForceSolveEngine = new(testGrid, 2, bruteForceMaxTries);
-				bruteForceSolveEngine.TrySolveBruteForce(ref solutions, 2, ref bruteForceMaxTries);
+				_ = bruteForceSolveEngine.TrySolveBruteForce(ref solutions, 2, ref bruteForceMaxTries);
 				if (solutions.Count != 1) {
 					// Value removal leads to multiple solutions
 					cellToEvaluate._value = backupValue;
@@ -58,7 +56,7 @@ namespace Sudoku.Engine {
 			// First, just populate the first row with all the candidates in order
 			foreach (Row row in grid.Rows) {
 				foreach (Cell cell in row.Cells) {
-					Int32 offset = ((cell.Column.Index - 1) + ((cell.Row.Index - 1) % grid._boxHeight) * grid._boxWidth + (cell.Row.Index - 1) / grid._boxHeight) % dimension;
+					Int32 offset = (cell.Column.Index - 1 + ((cell.Row.Index - 1) % grid._boxHeight * grid._boxWidth) + ((cell.Row.Index - 1) / grid._boxHeight)) % dimension;
 					cell._value = grid.Candidates[offset];
 				}
 			}
@@ -70,18 +68,14 @@ namespace Sudoku.Engine {
 				Column col2 = box.Columns[rnd.Next(0, grid._boxWidth)];
 				if (col1 != col2) {
 					for (Int32 cellIdx = 0; cellIdx < dimension; cellIdx++) {
-						Char temp = col1.Cells[cellIdx]._value;
-						col1.Cells[cellIdx]._value = col2.Cells[cellIdx]._value;
-						col2.Cells[cellIdx]._value = temp;
+						(col2.Cells[cellIdx]._value, col1.Cells[cellIdx]._value) = (col1.Cells[cellIdx]._value, col2.Cells[cellIdx]._value);
 					}
 				}
 				Row row1 = box.Rows[rnd.Next(0, grid._boxHeight)];
 				Row row2 = box.Rows[rnd.Next(0, grid._boxHeight)];
 				if (row1 != row2) {
 					for (Int32 cellIdx = 0; cellIdx < dimension; cellIdx++) {
-						Char temp = row1.Cells[cellIdx]._value;
-						row1.Cells[cellIdx]._value = row2.Cells[cellIdx]._value;
-						row2.Cells[cellIdx]._value = temp;
+						(row2.Cells[cellIdx]._value, row1.Cells[cellIdx]._value) = (row1.Cells[cellIdx]._value, row2.Cells[cellIdx]._value);
 					}
 				}
 
@@ -91,11 +85,9 @@ namespace Sudoku.Engine {
 				if (boxCol1 != boxCol2) {
 					for (Int32 colIdx = 0; colIdx < grid.BoxWidth; colIdx++) {
 						for (Int32 rowIdx = 0; rowIdx < dimension; rowIdx++) {
-							Cell cell1 = grid[colIdx + boxCol1 * grid.BoxWidth, rowIdx];
-							Cell cell2 = grid[colIdx + boxCol2 * grid.BoxWidth, rowIdx];
-							Char temp = cell1._value;
-							cell1._value = cell2._value;
-							cell2._value = temp;
+							Cell cell1 = grid[colIdx + (boxCol1 * grid.BoxWidth), rowIdx];
+							Cell cell2 = grid[colIdx + (boxCol2 * grid.BoxWidth), rowIdx];
+							(cell2._value, cell1._value) = (cell1._value, cell2._value);
 						}
 					}
 				}
@@ -104,11 +96,9 @@ namespace Sudoku.Engine {
 				if (boxRow1 != boxRow2) {
 					for (Int32 rowIdx = 0; rowIdx < grid.BoxHeight; rowIdx++) {
 						for (Int32 colIdx = 0; colIdx < dimension; colIdx++) {
-							Cell cell1 = grid[colIdx, rowIdx + boxCol1 * grid.BoxHeight];
-							Cell cell2 = grid[colIdx, rowIdx + boxCol2 * grid.BoxHeight];
-							Char temp = cell1._value;
-							cell1._value = cell2._value;
-							cell2._value = temp;
+							Cell cell1 = grid[colIdx, rowIdx + (boxCol1 * grid.BoxHeight)];
+							Cell cell2 = grid[colIdx, rowIdx + (boxCol2 * grid.BoxHeight)];
+							(cell2._value, cell1._value) = (cell1._value, cell2._value);
 						}
 					}
 				}

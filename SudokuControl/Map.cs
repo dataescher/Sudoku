@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Sudoku {
 	public class Map<T1, T2> {
-		internal readonly Dictionary<T1, T2> _forward = new();
-		internal readonly Dictionary<T2, T1> _reverse = new();
+		internal readonly Dictionary<T1, T2> _forward = [];
+		internal readonly Dictionary<T2, T1> _reverse = [];
 
 		public Map() {
 			Forward = new Indexer<T1, T2>(_forward);

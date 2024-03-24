@@ -39,11 +39,9 @@ namespace Sudoku.Engine.Logging {
 			"untrigintuple",
 			"duotrigintuple"
 		};
-		private readonly Boolean _coloringApplied;
 		public Color Color { get; set; }
 		internal Grid _grid;
 		public LogItem(Grid grid) {
-			_coloringApplied = false;
 			_grid = grid.Clone() as Grid;
 			_grid.ClearHighlighting();
 			Color = Color.White;
@@ -52,18 +50,18 @@ namespace Sudoku.Engine.Logging {
 		public abstract void ApplyColoring();
 		public override String ToString() {
 			StringBuilder sb = new();
-			PrintDetails(sb, Details);
+			_ = PrintDetails(sb, Details);
 			return sb.ToString();
 
 		}
 		internal String PrintDetails(StringBuilder sb, LogDetail detail, Int32 tabLevel = 0) {
 			if (tabLevel > 0) {
-				sb.Append(' ', tabLevel * 2);
+				_ = sb.Append(' ', tabLevel * 2);
 			}
-			sb.Append(detail.Description);
-			sb.Append(Environment.NewLine);
+			_ = sb.Append(detail.Description);
+			_ = sb.Append(Environment.NewLine);
 			foreach (LogDetail subDetail in detail.SubDetails) {
-				PrintDetails(sb, subDetail, tabLevel + 1);
+				_ = PrintDetails(sb, subDetail, tabLevel + 1);
 			}
 			return sb.ToString();
 		}

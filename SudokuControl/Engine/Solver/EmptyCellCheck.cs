@@ -11,7 +11,7 @@ namespace Sudoku.Engine.Solver {
 			foreach (Cell thisCell in _grid.Cells) {
 				if (thisCell.Empty) {
 					if (emptyCells is null) {
-						emptyCells = new() { thisCell };
+						emptyCells = [thisCell];
 					} else {
 						emptyCells.Add(thisCell);
 					}
@@ -21,9 +21,7 @@ namespace Sudoku.Engine.Solver {
 					}
 				}
 			}
-			if (log is not null) {
-				log.Items.Add(new EmptyCellCheckLog(_grid, emptyCells));
-			}
+			log?.Items.Add(new EmptyCellCheckLog(_grid, emptyCells));
 			return emptyCellCnt;
 		}
 	}

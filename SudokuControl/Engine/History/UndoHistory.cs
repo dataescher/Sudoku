@@ -7,7 +7,7 @@ namespace Sudoku.Engine.History {
 		internal List<UndoItem> UndoItems { get; set; }
 		public UndoHistory() {
 			UndoLevel = 0;
-			UndoItems = new();
+			UndoItems = [];
 		}
 		public Int32 Count => UndoItems.Count;
 		public void Add(UndoItem item) {

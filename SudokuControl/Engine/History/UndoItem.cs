@@ -5,7 +5,7 @@ namespace Sudoku.Engine.History {
 	public class UndoItem {
 		internal readonly List<Action> _actions;
 		public UndoItem() {
-			_actions = new();
+			_actions = [];
 		}
 		public void Add(Action action) {
 			_actions.Add(action);

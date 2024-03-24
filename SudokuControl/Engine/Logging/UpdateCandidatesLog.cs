@@ -8,11 +8,11 @@ namespace Sudoku.Engine.Logging {
 				if (candidatesEliminated == null) {
 					_candidatesEliminated = null;
 				} else {
-					_candidatesEliminated = new();
+					_candidatesEliminated = [];
 					foreach (KeyValuePair<Unit, Dictionary<Cell, List<Cell>>> thisCandidateEliminated in candidatesEliminated) {
-						Dictionary<Cell, List<Cell>> thisNewCandidateEliminated = new();
+						Dictionary<Cell, List<Cell>> thisNewCandidateEliminated = [];
 						foreach (KeyValuePair<Cell, List<Cell>> thisElimination in thisCandidateEliminated.Value) {
-							List<Cell> thisNewElimination = new();
+							List<Cell> thisNewElimination = [];
 							foreach (Cell thisCell in thisElimination.Value) {
 								thisNewElimination.Add(_grid.Cells[thisCell.Index]);
 							}
@@ -62,5 +62,4 @@ namespace Sudoku.Engine.Logging {
 			}
 		}
 	}
-
 }

@@ -9,8 +9,8 @@ namespace Sudoku.Engine {
 		public void FindNakedPairs_Box() {
 			foreach (Box thisBox in Boxes) {
 				for (Int32 row = 0; row < _boxHeight; row++) {
-					List<Cell> rowEmptyCells = new();
-					List<Char> rowCandidates = new();
+					List<Cell> rowEmptyCells = [];
+					List<Char> rowCandidates = [];
 					for (Int32 col = 0; col < _boxWidth; col++) {
 						Cell thisCell = thisBox[col, row];
 						if (thisCell.Empty) {
@@ -38,8 +38,8 @@ namespace Sudoku.Engine {
 					}
 				}
 				for (Int32 col = 0; col < _boxWidth; col++) {
-					List<Cell> colEmptyCells = new();
-					List<Char> colCandidates = new();
+					List<Cell> colEmptyCells = [];
+					List<Char> colCandidates = [];
 					for (Int32 row = 0; row < _boxHeight; row++) {
 						Cell thisCell = thisBox[col, row];
 						if (thisCell.Empty) {
@@ -73,7 +73,7 @@ namespace Sudoku.Engine {
 		internal Boolean CheckComplete(LogItemGroup log) {
 			DuplicateCheck duplicateCheck = new(this);
 			EmptyCellCheck emptyCellCheck = new(this);
-			return ((duplicateCheck.Solve(true, log, true) == 0) && (emptyCellCheck.Solve(true, log, true) == 0));
+			return (duplicateCheck.Solve(true, log, true) == 0) && (emptyCellCheck.Solve(true, log, true) == 0);
 		}
 
 		public void FindNakedPairs_RowsColumns() {
@@ -87,7 +87,7 @@ namespace Sudoku.Engine {
 					if (cell1.CandidateCount == 0) {
 						continue;
 					}
-					List<Cell> colMatches = new() { cell1 };
+					List<Cell> colMatches = [cell1];
 					for (Int32 row2 = row1 + 1; row2 < dimension; row2++) {
 						Cell cell2 = this[col, row2];
 						if (cell2.CandidateCount == 0) {
@@ -132,7 +132,7 @@ namespace Sudoku.Engine {
 					if (cell1.CandidateCount == 0) {
 						continue;
 					}
-					List<Cell> rowMatches = new() { cell1 };
+					List<Cell> rowMatches = [cell1];
 					for (Int32 col2 = col1 + 1; col2 < dimension; col2++) {
 						Cell cell2 = this[col2, row];
 						if (cell2.CandidateCount == 0) {

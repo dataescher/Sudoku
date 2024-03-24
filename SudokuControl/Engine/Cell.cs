@@ -27,18 +27,14 @@ namespace Sudoku.Engine {
 
 		public void RemoveCandidate(Char candidate) {
 			if (HasCandidate(candidate)) {
-				if (Grid.CurrentUndoItem != null) {
-					Grid.CurrentUndoItem.Add(new AddRemoveCandidateAction(this, candidate, true));
-				}
-				_candidates.Remove(candidate);
+				Grid.CurrentUndoItem?.Add(new AddRemoveCandidateAction(this, candidate, true));
+				_ = _candidates.Remove(candidate);
 			}
 		}
 		public void AddCandidate(Char candidate) {
 			if (!HasCandidate(candidate)) {
 				if (Grid.Candidates.Contains(candidate)) {
-					if (Grid.CurrentUndoItem != null) {
-						Grid.CurrentUndoItem.Add(new AddRemoveCandidateAction(this, candidate, false));
-					}
+					Grid.CurrentUndoItem?.Add(new AddRemoveCandidateAction(this, candidate, false));
 					_candidates.Add(candidate, new CandidateData());
 				}
 			}
@@ -56,36 +52,28 @@ namespace Sudoku.Engine {
 		internal Box _box;
 		public Box Box {
 			get {
-				if (_box is null) {
-					_box = Grid.Boxes[(Position.X / Grid.BoxWidth) + Grid.BoxHeight * (Position.Y / Grid.BoxHeight)];
-				}
+				_box ??= Grid.Boxes[(Position.X / Grid.BoxWidth) + (Grid.BoxHeight * (Position.Y / Grid.BoxHeight))];
 				return _box;
 			}
 		}
 		internal Column _col;
 		public Column Column {
 			get {
-				if (_col is null) {
-					_col = Grid.Columns[Position.X];
-				}
+				_col ??= Grid.Columns[Position.X];
 				return _col;
 			}
 		}
 		internal Row _row;
 		public Row Row {
 			get {
-				if (_row is null) {
-					_row = Grid.Rows[Position.Y];
-				}
+				_row ??= Grid.Rows[Position.Y];
 				return _row;
 			}
 		}
 		internal List<Unit> _units;
 		public List<Unit> Units {
 			get {
-				if (_units is null) {
-					_units = new() { Row, Column, Box };
-				}
+				_units ??= [Row, Column, Box];
 				return _units;
 			}
 		}
@@ -99,28 +87,24 @@ namespace Sudoku.Engine {
 			set {
 				if (value != _value) {
 					if (value == EmptyChar) {
-						if (Grid.CurrentUndoItem is not null) {
-							Grid.CurrentUndoItem.Add(new ChangeCellValueAction(this, _value, value));
-						}
+						Grid.CurrentUndoItem?.Add(new ChangeCellValueAction(this, _value, value));
 						_value = value;
 						UserCell = true;
 					} else if (Grid.Candidates.Contains(value.ToString())) {
-						if (Grid.CurrentUndoItem is not null) {
-							Grid.CurrentUndoItem.Add(new ChangeCellValueAction(this, _value, value));
-						}
+						Grid.CurrentUndoItem?.Add(new ChangeCellValueAction(this, _value, value));
 						_value = value;
 					}
 				}
 			}
 		}
 		public Boolean Empty => _value == EmptyChar;
-		public Int32 Index => Position.X + Position.Y * Grid.BoxWidth * Grid.BoxHeight;
+		public Int32 Index => Position.X + (Position.Y * Grid.BoxWidth * Grid.BoxHeight);
 		public Cell(Grid grid, Point position) {
 			_row = null;
 			_col = null;
 			_box = null;
 			_units = null;
-			_candidates = new();
+			_candidates = [];
 			Position = position;
 			Grid = grid;
 			_value = EmptyChar;
@@ -144,14 +128,14 @@ namespace Sudoku.Engine {
 			}
 			gfx.DrawRectangle(new(System.Drawing.Color.Black), Location.X, Location.Y, Size.Width, Size.Height);
 			if (_value != EmptyChar) {
-				gfx.DrawString(_value.ToString(), Grid.Font, fontBrush, new PointF(Location.X + (Size.Width - Grid.CellCharSize.Width) / 2, Location.Y + (Size.Height - Grid.CellCharSize.Height) / 2));
+				gfx.DrawString(_value.ToString(), Grid.Font, fontBrush, new PointF(Location.X + ((Size.Width - Grid.CellCharSize.Width) / 2), Location.Y + ((Size.Height - Grid.CellCharSize.Height) / 2)));
 			} else {
 				foreach (KeyValuePair<Char, CandidateData> candidate in _candidates) {
 					Int32 charPos = Grid.Candidates.IndexOf(candidate.Key);
 					Point position = new(charPos % Grid.BoxWidth, charPos / Grid.BoxWidth);
 					PointF location = new(
-						Location.X + Size.Width / Grid.BoxWidth * position.X + Size.Width / Grid.BoxWidth / 2 - Grid.PencilMarkCharSize.Width / 2,
-						Location.Y + Size.Height / Grid.BoxHeight * position.Y + Size.Height / Grid.BoxHeight / 2 - Grid.PencilMarkCharSize.Height / 2
+						Location.X + (Size.Width / Grid.BoxWidth * position.X) + (Size.Width / Grid.BoxWidth / 2) - (Grid.PencilMarkCharSize.Width / 2),
+						Location.Y + (Size.Height / Grid.BoxHeight * position.Y) + (Size.Height / Grid.BoxHeight / 2) - (Grid.PencilMarkCharSize.Height / 2)
 					);
 					if ((candidate.Value.Color != Color) && (candidate.Value.Color != GameColors.White)) {
 						// Draw a box for the candidate
@@ -196,9 +180,7 @@ namespace Sudoku.Engine {
 		public GameColors Color {
 			get => _color;
 			set {
-				if (Grid.CurrentUndoItem is not null) {
-					Grid.CurrentUndoItem.Add(new ChangeCellColorAction(this, _color, value));
-				}
+				Grid.CurrentUndoItem?.Add(new ChangeCellColorAction(this, _color, value));
 				_color = value;
 			}
 		}
@@ -206,17 +188,17 @@ namespace Sudoku.Engine {
 
 		public void GetText(StringBuilder sb) {
 			if (_value == EmptyChar) {
-				sb.Append('.');
+				_ = sb.Append('.');
 			} else {
-				sb.Append(_value);
+				_ = sb.Append(_value);
 			}
 			if (!Grid.CopyRawBoardOnly) {
 				if ((UserCell && (Value != EmptyChar)) || (Color != GameColors.White)) {
 					if (UserCell && (Value != EmptyChar)) {
-						sb.Append('*');
+						_ = sb.Append('*');
 					}
 					if (GameColor.ColorMap.Forward.ContainsKey(Color) && (Color != GameColors.White)) {
-						sb.Append(GameColor.ColorToLetter(Color));
+						_ = sb.Append(GameColor.ColorToLetter(Color));
 					}
 				}
 			}

@@ -15,7 +15,7 @@ namespace Sudoku.Engine {
 		public override Int32 Solve(Boolean solveMultiple, LogItemGroup log, Boolean modifyGrid = true) {
 			DuplicateCheck duplicateCheck = new(_grid);
 			EmptyCellCheck emptyCellCheck = new(_grid);
-			List<String> solutions = new();
+			List<String> solutions = [];
 			if (log is not null) {
 				log.Description = "Brute force solve engine";
 			}
@@ -26,7 +26,7 @@ namespace Sudoku.Engine {
 				return 0;
 			}
 			Int32 maxTries = _maxTries;
-			TrySolveBruteForce(ref solutions, _maxSolutions, ref maxTries);
+			_ = TrySolveBruteForce(ref solutions, _maxSolutions, ref maxTries);
 			if (solutions.Count > 0) {
 				if ((solutions.Count > 0) && (log is not null)) {
 					log.Items.Add(new BruteForceSolveLog(_grid, solutions));
@@ -47,12 +47,12 @@ namespace Sudoku.Engine {
 			if (solutions.Count >= maxSolutions) {
 				return false;
 			}
-			candidateGenerator.Solve(true, null, true);
-			_grid.FindAdvancedTactics(true, null, true);
+			_ = candidateGenerator.Solve(true, null, true);
+			_ = _grid.FindAdvancedTactics(true, null, true);
 			// Eliminate any cells which have only 1 candidate
-			nakedSinglesSolver.Solve(true, null, true);
-			candidateGenerator.Solve(true, null, true);
-			_grid.FindAdvancedTactics(true, null, true);
+			_ = nakedSinglesSolver.Solve(true, null, true);
+			_ = candidateGenerator.Solve(true, null, true);
+			_ = _grid.FindAdvancedTactics(true, null, true);
 			if (_grid.CellHasZeroCandidates()) {
 				// Check if any of the cells has zero candidates
 				return false;

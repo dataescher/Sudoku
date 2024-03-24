@@ -7,7 +7,7 @@ namespace Sudoku.Engine.Logging {
 		public List<LogItem> Items { get; private set; }
 		public LogItemGroup(String description = "") {
 			Description = description;
-			Items = new();
+			Items = [];
 		}
 	}
 }

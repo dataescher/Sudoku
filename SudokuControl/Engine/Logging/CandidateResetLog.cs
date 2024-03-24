@@ -8,7 +8,7 @@ namespace Sudoku.Engine.Logging {
 			if (candidatesReset == null) {
 				_candidatesReset = null;
 			} else {
-				_candidatesReset = new();
+				_candidatesReset = [];
 				foreach (Tuple<Cell, Char> thisCandidateReset in candidatesReset) {
 					_candidatesReset.Add(new Tuple<Cell, Char>(_grid.Cells[thisCandidateReset.Item1.Index], thisCandidateReset.Item2));
 				}

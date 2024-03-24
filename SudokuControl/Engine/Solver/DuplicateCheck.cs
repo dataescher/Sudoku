@@ -10,7 +10,7 @@ namespace Sudoku.Engine.Solver {
 			Int32 duplicatesFound = 0;
 			foreach (Unit unit in _grid.Units) {
 				// This dictionary contains information for the first cell of a given value
-				Dictionary<Char, Cell> unitCellData = new();
+				Dictionary<Char, Cell> unitCellData = [];
 				foreach (Cell cell in unit.Cells) {
 					if (!cell.Empty) {
 						if (unitCellData.TryGetValue(cell.Value, out Cell duplicate)) {
@@ -21,7 +21,7 @@ namespace Sudoku.Engine.Solver {
 								if (unitDuplicateData.TryGetValue(cell.Value, out List<Cell> unitDuplicateCells)) {
 									unitDuplicateCells.Add(cell);
 								} else {
-									unitDuplicateData.Add(cell.Value, new List<Cell>() { cell });
+									unitDuplicateData.Add(cell.Value, [cell]);
 								}
 							} else {
 								duplicates.Add(unit, new Dictionary<Char, List<Cell>>() { { cell.Value, new List<Cell>() { duplicate, cell } } });
@@ -40,10 +40,8 @@ namespace Sudoku.Engine.Solver {
 					break;
 				}
 			}
-			if (log is not null) {
-				// Log the duplicates here
-				log.Items.Add(new DuplicateLog(_grid, duplicates));
-			}
+			// Log the duplicates here
+			log?.Items.Add(new DuplicateLog(_grid, duplicates));
 			return duplicatesFound;
 		}
 	}

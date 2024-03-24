@@ -16,7 +16,7 @@ namespace Sudoku.Engine {
 		public List<Column> Columns {
 			get {
 				if (_cols is null) {
-					_cols = new();
+					_cols = [];
 					for (Int32 col = 0; col < (Grid.BoxWidth * Grid.BoxHeight); col++) {
 						_cols.Add(Grid.Columns[col]);
 					}
@@ -28,9 +28,9 @@ namespace Sudoku.Engine {
 		public List<Box> Boxes {
 			get {
 				if (_boxes is null) {
-					_boxes = new();
+					_boxes = [];
 					for (Int32 box = 0; box < Grid.BoxHeight; box++) {
-						_boxes.Add(Grid.Boxes[box + Grid.BoxHeight * (Position.Y / Grid.BoxHeight)]);
+						_boxes.Add(Grid.Boxes[box + (Grid.BoxHeight * (Position.Y / Grid.BoxHeight))]);
 					}
 				}
 				return _boxes;
@@ -39,16 +39,8 @@ namespace Sudoku.Engine {
 		internal List<Unit> _intersectingUnits;
 		public override List<Unit> IntersectingUnits {
 			get {
-				if (_intersectingUnits is null) {
-					// Do a one-time computation of the intersecting units
-					_intersectingUnits = new();
-					foreach (Column thisCol in Columns) {
-						_intersectingUnits.Add(thisCol);
-					}
-					foreach (Box thisBox in Boxes) {
-						_intersectingUnits.Add(thisBox);
-					}
-				}
+				// Do a one-time computation of the intersecting units
+				_intersectingUnits ??= [.. Columns, .. Boxes];
 				return _intersectingUnits;
 			}
 		}
