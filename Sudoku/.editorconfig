@@ -42,7 +42,7 @@ dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity
 dotnet_style_require_accessibility_modifiers = for_non_interface_members
 
 # Expression-level preferences
-dotnet_style_coalesce_expression = true
+dotnet_style_coalesce_expression = false
 dotnet_style_collection_initializer = true
 dotnet_style_explicit_tuple_names = true
 dotnet_style_namespace_match_folder = true
@@ -139,7 +139,7 @@ csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimenta
 csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = true
 csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = true
 csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false:suggestion
-csharp_style_allow_embedded_statements_on_same_line_experimental = false:suggestion
+csharp_style_allow_embedded_statements_on_same_line_experimental = true:suggestion
 
 #### C# Formatting Rules ####
 
