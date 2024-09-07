@@ -8,11 +8,11 @@ namespace Sudoku.Engine.Logging {
 				if (candidatesEliminated == null) {
 					_candidatesEliminated = null;
 				} else {
-					_candidatesEliminated = [];
+					_candidatesEliminated = new();
 					foreach (KeyValuePair<Unit, Dictionary<Cell, List<Cell>>> thisCandidateEliminated in candidatesEliminated) {
-						Dictionary<Cell, List<Cell>> thisNewCandidateEliminated = [];
+						Dictionary<Cell, List<Cell>> thisNewCandidateEliminated = new();
 						foreach (KeyValuePair<Cell, List<Cell>> thisElimination in thisCandidateEliminated.Value) {
-							List<Cell> thisNewElimination = [];
+							List<Cell> thisNewElimination = new();
 							foreach (Cell thisCell in thisElimination.Value) {
 								thisNewElimination.Add(_grid.Cells[thisCell.Index]);
 							}

@@ -6,7 +6,7 @@ namespace Sudoku.Engine {
 		public void FindXWing() {
 			Int32 dimension = _boxWidth * _boxHeight;
 			// First check columns
-			Dictionary<Int32, Dictionary<Char, List<Int32>>> colCandidateDictionary = [];
+			Dictionary<Int32, Dictionary<Char, List<Int32>>> colCandidateDictionary = new();
 			for (Int32 col = 0; col < dimension; col++) {
 				for (Int32 row = 0; row < dimension; row++) {
 					Cell thisCell = this[col, row];
@@ -15,7 +15,7 @@ namespace Sudoku.Engine {
 							if (rowCandidateMap.TryGetValue(thisCandidate, out List<Int32> rowCandidates)) {
 								rowCandidates.Add(row);
 							} else {
-								rowCandidateMap.Add(thisCandidate, [row]);
+								rowCandidateMap.Add(thisCandidate, new List<Int32>() { row });
 							}
 						} else {
 							colCandidateDictionary.Add(col, new Dictionary<Char, List<Int32>>() { { thisCandidate, new List<Int32>() { row } } });
@@ -28,7 +28,7 @@ namespace Sudoku.Engine {
 				for (Int32 col1 = 0; col1 < dimension; col1++) {
 					if (colCandidateDictionary.TryGetValue(col1, out Dictionary<Char, List<Int32>> col1Dictionary)) {
 						if (col1Dictionary.TryGetValue(thisCandidate, out List<Int32> col1RowList)) {
-							List<Int32> matchingColumns = [col1];
+							List<Int32> matchingColumns = new() { col1 };
 							for (Int32 col2 = col1 + 1; col2 < dimension; col2++) {
 								if (colCandidateDictionary.TryGetValue(col2, out Dictionary<Char, List<Int32>> col2Dictionary)) {
 									if (col2Dictionary.TryGetValue(thisCandidate, out List<Int32> col2RowList)) {
@@ -65,7 +65,7 @@ namespace Sudoku.Engine {
 			}
 
 			// Now check rows
-			Dictionary<Int32, Dictionary<Char, List<Int32>>> rowCandidateDictionary = [];
+			Dictionary<Int32, Dictionary<Char, List<Int32>>> rowCandidateDictionary = new();
 			for (Int32 row = 0; row < dimension; row++) {
 				for (Int32 col = 0; col < dimension; col++) {
 					Cell thisCell = this[col, row];
@@ -74,7 +74,7 @@ namespace Sudoku.Engine {
 							if (colCandidateMap.TryGetValue(thisCandidate, out List<Int32> colCandidates)) {
 								colCandidates.Add(col);
 							} else {
-								colCandidateMap.Add(thisCandidate, [col]);
+								colCandidateMap.Add(thisCandidate, new List<Int32>() { col });
 							}
 						} else {
 							rowCandidateDictionary.Add(row, new Dictionary<Char, List<Int32>>() { { thisCandidate, new List<Int32>() { col } } });
@@ -87,7 +87,7 @@ namespace Sudoku.Engine {
 				for (Int32 row1 = 0; row1 < dimension; row1++) {
 					if (rowCandidateDictionary.TryGetValue(row1, out Dictionary<Char, List<Int32>> row1Dictionary)) {
 						if (row1Dictionary.TryGetValue(thisCandidate, out List<Int32> row1ColList)) {
-							List<Int32> matchingRows = [row1];
+							List<Int32> matchingRows = new() { row1 };
 							for (Int32 row2 = row1 + 1; row2 < dimension; row2++) {
 								if (rowCandidateDictionary.TryGetValue(row2, out Dictionary<Char, List<Int32>> row2Dictionary)) {
 									if (row2Dictionary.TryGetValue(thisCandidate, out List<Int32> row2ColList)) {

@@ -29,7 +29,7 @@ namespace Sudoku {
 		}
 
 		private void BtnCheck_Click(Object sender, EventArgs e) {
-			_ = SgBoard.CheckComplete();
+			Boolean checkGood = SgBoard.CheckComplete();
 			SgBoard.Select();
 		}
 
@@ -37,14 +37,14 @@ namespace Sudoku {
 			CboHighlightCandidates.Items.Clear();
 			// Will need to do this every time a grid is loaded, since it could change the available characters
 			foreach (Char thisCandidate in SgBoard.Grid.Candidates) {
-				_ = CboHighlightCandidates.Items.Add(thisCandidate);
+				CboHighlightCandidates.Items.Add(thisCandidate);
 			}
 		}
 
 		private void FrmSudoku_Load(Object sender, EventArgs e) {
 			// Will need to do this every time a grid is loaded, since it could change the available characters
 			foreach (Char thisCandidate in SgBoard.Grid.Candidates) {
-				_ = CboHighlightCandidates.Items.Add(thisCandidate);
+				CboHighlightCandidates.Items.Add(thisCandidate);
 			}
 			FillAvailiableCandidates();
 		}
@@ -77,7 +77,7 @@ namespace Sudoku {
 			try {
 				SgBoard.FromString(Clipboard.GetText());
 			} catch (Exception ex) {
-				_ = MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			SgBoard.FromString(SgBoard.ToString());
 			FillAvailiableCandidates();
@@ -126,8 +126,7 @@ namespace Sudoku {
 		private void BtnGeneratePuzzle_Click(Object sender, EventArgs e) {
 			SgBoard.GeneratePuzzle();
 			Application.DoEvents();
-
-			_ = SgBoard.ToString();
+			String thisPuzzle = SgBoard.ToString();
 			SgBoard.GenerateCandidates();
 			SgBoard.Solve();
 			Application.DoEvents();
@@ -146,7 +145,9 @@ namespace Sudoku {
 		}
 
 		private void AddLogDetail(TreeNode logNode, LogDetail details, Object tag) {
-			logNode.Tag ??= details;
+			if (logNode.Tag is null) {
+				logNode.Tag = details;
+			}
 			foreach (LogDetail detail in details.SubDetails) {
 				TreeNode thisLogNode = logNode.Nodes.Add(detail.Description);
 				AddLogDetail(thisLogNode, detail, tag);

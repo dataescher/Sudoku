@@ -8,7 +8,7 @@ namespace Sudoku.Engine {
 		public Grid Grid { get; }
 		public List<Cell> Cells { get; }
 		public Int32 Index { get; }
-		public Int32 UnitIndex => Grid.Units.IndexOf(this) + 1;
+		public Int32 UnitIndex => (Grid.Units.IndexOf(this) + 1);
 		public Point Position { get; }
 		public PointF Location => Cells[0].Location;
 		public SizeF Size {
@@ -22,14 +22,14 @@ namespace Sudoku.Engine {
 			}
 		}
 		public Unit(Grid grid, Int32 index, Point pos) {
-			Cells = [];
+			Cells = new();
 			Grid = grid;
 			Index = index;
 			Position = pos;
 		}
 		public abstract List<Unit> IntersectingUnits { get; }
 		public List<Cell> IntersectingCells(Unit other) {
-			List<Cell> result = [];
+			List<Cell> result = new();
 			foreach (Cell cell in Cells) {
 				if (other.Cells.Contains(cell)) {
 					result.Add(cell);

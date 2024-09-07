@@ -5,7 +5,7 @@ namespace Sudoku.Engine.Logging {
 	public class NakedSingleLog : LogItem {
 		private readonly List<Tuple<Char, Cell>> _nakedSingles;
 		public NakedSingleLog(Grid grid, List<Tuple<Char, Cell>> nakedSingles) : base(grid) {
-			_nakedSingles = [];
+			_nakedSingles = new();
 			foreach (Tuple<Char, Cell> thisNakedSingle in nakedSingles) {
 				_nakedSingles.Add(new Tuple<Char, Cell>(thisNakedSingle.Item1, _grid.Cells[thisNakedSingle.Item2.Index]));
 			}

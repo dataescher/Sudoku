@@ -19,8 +19,7 @@ namespace Sudoku.Engine {
 			Int32 tacticsFound = 0;
 			Int32 tacticsFoundIteration;
 			LockedCandidateSolver lockedCandidateSolver = new(this);
-
-			_ = new PointingSubsetSolver(this);
+			PointingSubsetSolver pointingSubsetSolver = new(this);
 			HiddenSubsetSolver hiddenSubsetSolver = new(this);
 
 			do {
@@ -44,7 +43,7 @@ namespace Sudoku.Engine {
 			NakedSinglesSolver nakedSinglesSolver = new(this);
 			CandidateGenerator candidateGenerator = new(this);
 			Int32 cellsFilledStep;
-			_ = candidateGenerator.UpdateCandidates(true, log, true);
+			candidateGenerator.UpdateCandidates(true, log, true);
 			do {
 				Int32 tacticsFound = FindAdvancedTactics(solveMultiple, log, modifyGrid);
 				totalTacticsFound += tacticsFound;
@@ -53,7 +52,7 @@ namespace Sudoku.Engine {
 				}
 				cellsFilledStep = nakedSinglesSolver.Solve(solveMultiple, log, modifyGrid);
 				if (cellsFilledStep > 0) {
-					_ = candidateGenerator.UpdateCandidates(true, log, true);
+					candidateGenerator.UpdateCandidates(true, log, true);
 					totalCellsFilled += cellsFilledStep;
 				}
 				if (!solveMultiple) {

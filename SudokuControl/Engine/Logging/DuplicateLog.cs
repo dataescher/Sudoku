@@ -10,13 +10,13 @@ namespace Sudoku.Engine.Logging {
 		public DuplicateLog(Grid grid, Dictionary<Unit, Dictionary<Char, List<Cell>>> duplicates) : base(grid) {
 			_duplicates = null;
 			if (duplicates is not null) {
-				_duplicates = [];
+				_duplicates = new();
 				foreach (KeyValuePair<Unit, Dictionary<Char, List<Cell>>> thisDuplicateUnitEntry in duplicates) {
 					Unit newUnit = _grid.Units[thisDuplicateUnitEntry.Key.UnitIndex - 1];
-					Dictionary<Char, List<Cell>> thisUnitDuplicates = [];
+					Dictionary<Char, List<Cell>> thisUnitDuplicates = new();
 					_duplicates.Add(newUnit, thisUnitDuplicates);
 					foreach (KeyValuePair<Char, List<Cell>> thisUnitDuplicateData in thisDuplicateUnitEntry.Value) {
-						List<Cell> duplicateCells = [];
+						List<Cell> duplicateCells = new();
 						thisUnitDuplicates.Add(thisUnitDuplicateData.Key, duplicateCells);
 						foreach (Cell thisUnitDuplicateCell in thisUnitDuplicateData.Value) {
 							duplicateCells.Add(_grid.Cells[thisUnitDuplicateCell.Index]);
@@ -28,7 +28,7 @@ namespace Sudoku.Engine.Logging {
 		public override LogDetail Details {
 			get {
 				LogDetail details = new(this);
-				Boolean completionCheckResult = _duplicates is null;
+				Boolean completionCheckResult = (_duplicates is null);
 				String status;
 				if (completionCheckResult) {
 					status = "PASSED";

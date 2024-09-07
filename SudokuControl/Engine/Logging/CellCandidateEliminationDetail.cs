@@ -5,7 +5,6 @@
 		private readonly Cell _eliminateCell;
 		public CellCandidateEliminationDetail(LogItem logItem, Unit unit, Cell containCell, Cell eliminateCell) : base(logItem) {
 			Description = $"{eliminateCell} candidate {containCell._value} due to {containCell}";
-			_unit = unit;
 			_containCell = containCell;
 			_eliminateCell = eliminateCell;
 		}

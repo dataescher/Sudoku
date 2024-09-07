@@ -125,11 +125,11 @@ namespace Sudoku.Engine {
 			_boxHeight = boxHeight;
 			Font = new(FontFamily.GenericSerif, 16f, FontStyle.Bold);
 			Size = new(500, 500);
-			Cells = [];
-			Boxes = [];
-			Columns = [];
-			Rows = [];
-			Units = [];
+			Cells = new();
+			Boxes = new();
+			Columns = new();
+			Rows = new();
+			Units = new();
 			CreateBoard();
 		}
 
@@ -141,11 +141,11 @@ namespace Sudoku.Engine {
 			PencilMarkFont = other.PencilMarkFont;
 			CellCharSize = other.CellCharSize;
 			PencilMarkCharSize = other.PencilMarkCharSize;
-			Cells = [];
-			Boxes = [];
-			Columns = [];
-			Rows = [];
-			Units = [];
+			Cells = new();
+			Boxes = new();
+			Columns = new();
+			Rows = new();
+			Units = new();
 			foreach (Row thisRow in other.Rows) {
 				Row duplicateRow = new(this, thisRow.Index, thisRow.Position);
 				Rows.Add(duplicateRow);
@@ -236,7 +236,7 @@ namespace Sudoku.Engine {
 				// the box width is the same as the number of boxes in a column
 				// Therefore, _boxWidth can be used to describe either
 				Point gridPosition = new(cellPosition.X / _boxWidth, cellPosition.Y / _boxHeight);
-				Int32 boxIdx = (gridPosition.Y * _boxHeight) + gridPosition.X;
+				Int32 boxIdx = gridPosition.Y * _boxHeight + gridPosition.X;
 				Rows[cellPosition.Y].Cells.Add(thisCell);
 				Columns[cellPosition.X].Cells.Add(thisCell);
 				Boxes[boxIdx].Cells.Add(thisCell);
@@ -258,10 +258,10 @@ namespace Sudoku.Engine {
 		public void GetText(StringBuilder sb) {
 			Boolean useWhitespace = false;
 			if ((_boxWidth != _defaultBoxWidth) || (_boxHeight != _defaultBoxHeight)) {
-				_ = sb.Append($"{_boxWidth}-{_boxHeight}:");
+				sb.Append($"{_boxWidth}-{_boxHeight}:");
 			}
 			if (useWhitespace) {
-				_ = sb.Append(Environment.NewLine);
+				sb.Append(Environment.NewLine);
 			}
 			Int32 dimension = _boxHeight * _boxWidth;
 			for (Int32 row = 0; row < dimension; row++) {
@@ -269,13 +269,13 @@ namespace Sudoku.Engine {
 					this[col, row].GetText(sb);
 					if (useWhitespace) {
 						if (col < (dimension - 1)) {
-							_ = sb.Append('\t');
+							sb.Append('\t');
 						}
 					}
 				}
 				if (useWhitespace) {
 					if (row < (dimension - 1)) {
-						_ = sb.Append(Environment.NewLine);
+						sb.Append(Environment.NewLine);
 					}
 				}
 			}
@@ -399,9 +399,9 @@ namespace Sudoku.Engine {
 			if ((position.X >= 0) && (position.Y >= 0)) {
 				if ((position.X < (BoxHeight * BoxWidth)) && (position.Y < (BoxWidth * BoxHeight))) {
 					Point selectedBoxPosition = new(position.X / BoxHeight, position.Y / BoxWidth);
-					Int32 selectedBoxIndex = (selectedBoxPosition.Y * BoxHeight) + selectedBoxPosition.X;
-					Point selectedCellPosition = new(position.X - (selectedBoxPosition.X * BoxHeight), position.Y - (selectedBoxPosition.Y * BoxWidth));
-					Int32 selectedCellIndex = (selectedCellPosition.Y * BoxWidth) + selectedCellPosition.X;
+					Int32 selectedBoxIndex = selectedBoxPosition.Y * BoxHeight + selectedBoxPosition.X;
+					Point selectedCellPosition = new(position.X - selectedBoxPosition.X * BoxHeight, position.Y - selectedBoxPosition.Y * BoxWidth);
+					Int32 selectedCellIndex = selectedCellPosition.Y * BoxWidth + selectedCellPosition.X;
 					SelectedCell = Boxes[selectedBoxIndex].Cells[selectedCellIndex];
 				}
 			}

@@ -50,18 +50,18 @@ namespace Sudoku.Engine.Logging {
 		public abstract void ApplyColoring();
 		public override String ToString() {
 			StringBuilder sb = new();
-			_ = PrintDetails(sb, Details);
+			PrintDetails(sb, Details);
 			return sb.ToString();
 
 		}
 		internal String PrintDetails(StringBuilder sb, LogDetail detail, Int32 tabLevel = 0) {
 			if (tabLevel > 0) {
-				_ = sb.Append(' ', tabLevel * 2);
+				sb.Append(' ', tabLevel * 2);
 			}
-			_ = sb.Append(detail.Description);
-			_ = sb.Append(Environment.NewLine);
+			sb.Append(detail.Description);
+			sb.Append(Environment.NewLine);
 			foreach (LogDetail subDetail in detail.SubDetails) {
-				_ = PrintDetails(sb, subDetail, tabLevel + 1);
+				PrintDetails(sb, subDetail, tabLevel + 1);
 			}
 			return sb.ToString();
 		}

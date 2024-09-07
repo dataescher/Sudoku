@@ -27,8 +27,12 @@ namespace Sudoku {
 		public delegate void LogAddedEventHandler(Object sender, LogItemGroup log);
 		internal LogAddedEventHandler _logItemAdded;
 		public event LogAddedEventHandler LogItemAdded {
-			add => _logItemAdded += value;
-			remove => _logItemAdded -= value;
+			add {
+				_logItemAdded += value;
+			}
+			remove {
+				_logItemAdded -= value;
+			}
 		}
 		protected void AddLogItemGroup(LogItemGroup log) {
 			_logItemAdded?.Invoke(this, log);
@@ -83,7 +87,7 @@ namespace Sudoku {
 			Grid.FromString(boardString);
 			UserMode = true;
 			CandidateGenerator candidateGenerator = new(Grid);
-			_ = candidateGenerator.Solve(true, null, true);
+			candidateGenerator.Solve(true, null, true);
 			Invalidate();
 		}
 
@@ -112,7 +116,7 @@ namespace Sudoku {
 		public void ClearUserEdits() {
 			Grid.ClearUserEdits();
 			CandidateGenerator candidateGenerator = new(Grid);
-			_ = candidateGenerator.Solve(true, null, true);
+			candidateGenerator.Solve(true, null, true);
 			foreach (Cell thisCell in Grid.Cells) {
 				thisCell.Color = GameColors.White;
 			}
@@ -123,7 +127,7 @@ namespace Sudoku {
 		public void GenerateCandidates() {
 			LogItemGroup log = new("Resetting candidates");
 			CandidateGenerator candidateGenerator = new(Grid);
-			_ = candidateGenerator.Solve(true, log, true);
+			candidateGenerator.Solve(true, log, true);
 			AddLogItemGroup(log);
 			foreach (Cell thisCell in Grid.Cells) {
 				thisCell.Color = GameColors.White;
@@ -229,7 +233,7 @@ namespace Sudoku {
 
 		public void Solve(Boolean solveMultiple = true) {
 			LogItemGroup log = new();
-			_ = Grid.Solve(solveMultiple, log, true);
+			Grid.Solve(solveMultiple, log, true);
 			AddLogItemGroup(log);
 			Grid.PushUndoItem();
 			Invalidate();
@@ -251,7 +255,7 @@ namespace Sudoku {
 		public void SolveBruteForce() {
 			LogItemGroup log = new();
 			BruteForceSolveEngine bruteForceSolveEngine = new(Grid, 100, -1);
-			_ = bruteForceSolveEngine.Solve(true, log, true);
+			bruteForceSolveEngine.Solve(true, log, true);
 			AddLogItemGroup(log);
 			Grid.PushUndoItem();
 			Invalidate();

@@ -8,15 +8,15 @@ namespace Sudoku.Engine.Logging {
 		private readonly List<Tuple<Cell, Char>> _eliminatedCandidates;
 		public HiddenSubsetLog(Grid grid, Unit unit, List<Tuple<Char, List<Cell>>> groups, List<Tuple<Cell, Char>> eliminatedCandidates) : base(grid) {
 			_unit = _grid.Units[unit.UnitIndex - 1];
-			_groups = [];
+			_groups = new List<Tuple<Char, List<Cell>>>();
 			foreach (Tuple<Char, List<Cell>> thisGroup in groups) {
-				List<Cell> thisGroupCells = [];
+				List<Cell> thisGroupCells = new();
 				foreach (Cell thisCell in thisGroup.Item2) {
 					thisGroupCells.Add(_grid.Cells[thisCell.Index]);
 				}
 				_groups.Add(new Tuple<Char, List<Cell>>(thisGroup.Item1, thisGroupCells));
 			}
-			_eliminatedCandidates = [];
+			_eliminatedCandidates = new();
 			foreach (Tuple<Cell, Char> thisEliminatedCandidate in eliminatedCandidates) {
 				_eliminatedCandidates.Add(new Tuple<Cell, Char>(_grid.Cells[thisEliminatedCandidate.Item1.Index], thisEliminatedCandidate.Item2));
 			}

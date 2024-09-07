@@ -9,7 +9,7 @@ namespace Sudoku.Engine.Logging {
 		public LogDetail(LogItem logItem, String description) {
 			_logItem = logItem;
 			Description = description;
-			SubDetails = [];
+			SubDetails = new();
 		}
 		public LogDetail(LogItem logItem) : this(logItem, String.Empty) { }
 		public override String ToString() {

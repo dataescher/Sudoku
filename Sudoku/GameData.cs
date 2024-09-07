@@ -33,8 +33,8 @@ namespace Sudoku {
 
 			public Category(String description) {
 				Description = description;
-				Puzzles = [];
-				Categories = [];
+				Puzzles = new();
+				Categories = new();
 			}
 			public Category() : this(String.Empty) { }
 		}
@@ -48,7 +48,7 @@ namespace Sudoku {
 		}
 
 		public GameData() {
-			Categories = [];
+			Categories = new();
 		}
 
 		private static XmlSerializer Serializer { get; }

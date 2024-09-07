@@ -12,11 +12,11 @@ namespace Sudoku.Engine.Logging {
 			_lockedUnit = _grid.Units[lockedUnit.UnitIndex - 1];
 			_intersectingUnit = _grid.Units[intersectingUnit.UnitIndex - 1];
 			_candidate = candidate;
-			_lockedCells = [];
+			_lockedCells = new();
 			foreach (Cell lockedCell in lockedCells) {
 				_lockedCells.Add(_grid.Cells[lockedCell.Index]);
 			}
-			_removeCells = [];
+			_removeCells = new();
 			foreach (Cell removeCell in removeCells) {
 				_removeCells.Add(_grid.Cells[removeCell.Index]);
 			}
@@ -33,18 +33,17 @@ namespace Sudoku.Engine.Logging {
 				} else {
 					type = "Column";
 				}
-				LogDetail details = new(this) {
-					Description = $"Locked {setNumbering[_lockedCells.Count - 1]} - {type}"
-				};
+				LogDetail details = new(this);
+				details.Description = $"Locked {setNumbering[_lockedCells.Count - 1]} - {type}";
 				details.SubDetails.Add(new(this, $"Candidate: {_candidate}"));
 				details.SubDetails.Add(
 					new(this, "Locked unit") {
-						SubDetails = [new UnitDetail(this, _lockedUnit)]
+						SubDetails = new() { new UnitDetail(this, _lockedUnit) }
 					}
 				);
 				details.SubDetails.Add(
 					new(this, "Intersecting unit") {
-						SubDetails = [new UnitDetail(this, _intersectingUnit)]
+						SubDetails = new() { new UnitDetail(this, _intersectingUnit) }
 					}
 				);
 				LogDetail lockCellDetails = new(this, "Locked candidate cells");

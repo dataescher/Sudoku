@@ -12,11 +12,11 @@ namespace Sudoku.Engine.Logging {
 			_box = _grid.Boxes[box.Index - 1];
 			_intersectingUnit = _grid.Units[intersectingUnit.UnitIndex - 1];
 			_candidate = candidate;
-			_pointingCandidateCells = [];
+			_pointingCandidateCells = new();
 			foreach (Cell thisCell in evaluatedCells) {
 				_pointingCandidateCells.Add(_grid.Cells[thisCell.Index]);
 			}
-			_eliminatedCandidateCells = [];
+			_eliminatedCandidateCells = new();
 			foreach (Cell thisCell in eliminatedCandidateCells) {
 				_eliminatedCandidateCells.Add(_grid.Cells[thisCell.Index]);
 			}
