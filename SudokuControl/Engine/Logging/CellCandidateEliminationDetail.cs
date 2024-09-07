@@ -7,6 +7,7 @@
 			Description = $"{eliminateCell} candidate {containCell._value} due to {containCell}";
 			_containCell = containCell;
 			_eliminateCell = eliminateCell;
+			_unit = unit;
 		}
 		public override void ShowItem(Grid grid) {
 			base.ShowItem(grid);
