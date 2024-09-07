@@ -83,13 +83,21 @@
     <ManifestKeyFile>Sudoku_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -127,6 +135,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include=".editorconfig" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -172,12 +181,13 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="logo.ico" />
     <Content Include="sudoku.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>DataescherBuildTools.exe --wd "$(ProjectDir)Properties" --vcs GIT --update "AssemblyInfo.cs"</PreBuildEvent>
+    <PreBuildEvent>DBuild.exe --wd "$(ProjectDir)Properties" --vcs GIT --update "AssemblyInfo.cs"</PreBuildEvent>
   </PropertyGroup>
 </Project>
