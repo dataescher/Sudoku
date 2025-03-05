@@ -379,4 +379,3 @@ namespace Sudoku {
 		private System.Windows.Forms.CheckBox CbCopyRawBoard;
 	}
 }
-
